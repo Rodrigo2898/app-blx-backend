@@ -5,6 +5,15 @@ from sqlalchemy import Float
 from sqlalchemy import Boolean
 from src.infra.sqlachemy.config.database import Base
 
+
+class Usuario(Base):
+    __tablename__ = 'usuario'
+
+    id = Column(Integer, primary_key=True, index=True)
+    nome = Column(String)
+    telefone = Column(String)
+
+
 class Produto(Base):
     __tablename__ = 'produto'
 
@@ -13,3 +22,5 @@ class Produto(Base):
     detalhes = Column(String)
     preco = Column(Float)
     disponivel = Column(Boolean)
+    tamanhos = Column(String)
+
