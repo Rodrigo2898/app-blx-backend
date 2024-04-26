@@ -3,6 +3,17 @@ from typing import Optional, List
 
 
 # Essa arquivo schemas é usado apenas para requests e responses
+
+class Usuario(BaseModel):
+    id: Optional[int] = None
+    nome: str
+    telefone: str
+    senha: str
+
+    class Config:
+        orm_mode = True
+
+
 class UsuarioSimples(BaseModel):
     id: Optional[int] = None
     nome: str
