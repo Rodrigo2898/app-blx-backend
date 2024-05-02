@@ -1,4 +1,4 @@
-from sqlalchemy import select, delete
+from sqlalchemy import select, delete, update
 from sqlalchemy.orm import Session
 from src.schemas import schemas
 from src.infra.sqlachemy.models import models
@@ -14,7 +14,8 @@ class RepositorioProduto():
             nome=produto.nome,
             detalhes=produto.detalhes,
             preco=produto.preco,
-            disponivel=produto.disponivel
+            disponivel=produto.disponivel,
+            usuario_id=produto.usuario_id
         )
         self.session.add(db_produto)
         self.session.commit()
@@ -31,7 +32,18 @@ class RepositorioProduto():
 
         return produto
 
+    def editar(self, produto: schemas.Produto):
+        update_stmt = update(models.Produto).where(models.Produto.id == produto.id).values(
+                                                                        nome=produto.nome,
+                                                                        detalhes=produto.detalhes,
+                                                                        preco=produto.preco,
+                                                                        disponivel=produto.disponivel,
+                                                                        usuario_id=produto.usuario_id)
+
+        self.session.execute(update_stmt)
+        self.session.commit()
+
     def remover(self, produto_id: int):
-        stmt = delete(models.Produto).where(models.Produto.id == produto_id)
-        self.session.execute(stmt)
+        delete_stmt = delete(models.Produto).where(models.Produto.id == produto_id)
+        self.session.execute(delete_stmt)
         self.session.commit()
