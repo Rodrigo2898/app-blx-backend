@@ -4,11 +4,23 @@ from typing import Optional, List
 
 # Essa arquivo schemas é usado apenas para requests e responses
 
+
+class ProdutoSimples(BaseModel):
+    id: Optional[int] = None
+    nome: str
+    preco: float
+    disponivel: bool
+
+    class Config:
+        orm_mode = True
+
+
 class Usuario(BaseModel):
     id: Optional[int] = None
     nome: str
     telefone: str
     senha: str
+    produtos: List[ProdutoSimples] = []
 
     class Config:
         orm_mode = True
@@ -29,19 +41,8 @@ class Produto(BaseModel):
     detalhes: str
     preco: float
     disponivel: bool = False
-    usuario_id: int
-    # usuario: Optional[Usuario]
-
-    class Config:
-        orm_mode = True
-
-
-class ProdutoSimples(BaseModel):
-    id: Optional[int] = None
-    nome: str
-    detalhes: str
-    preco: float
-    usuario: Optional[Usuario]
+    usuario_id: Optional[int] = None
+    usuario: Optional[UsuarioSimples] = None
 
     class Config:
         orm_mode = True
