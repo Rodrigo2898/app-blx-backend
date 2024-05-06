@@ -1,4 +1,4 @@
-from fastapi import APIRouter, status, Depends
+from fastapi import APIRouter, status, Depends, HTTPException
 from typing import List
 from sqlalchemy.orm import Session
 from src.schemas.schemas import Produto, ProdutoSimples
@@ -27,6 +27,15 @@ def atualizar_produto(id: int, produto: Produto, session: Session = Depends(get_
     RepositorioProduto(session).editar(id, produto)
     produto.id = id
     return produto
+
+@router.get('/produtos/{id}')
+def exibir_produto(id: int, session: Session = Depends(get_db)):
+    produto_localizado = RepositorioProduto(session).buscarPorId(id)
+    if not produto_localizado:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail=f'Não há um produto com o id = {id}')
+    return produto_localizado
+
 
 
 @router.delete("/produtos/{id}", status_code=status.HTTP_204_NO_CONTENT)
