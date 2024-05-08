@@ -30,7 +30,7 @@ def atualizar_produto(id: int, produto: Produto, session: Session = Depends(get_
 
 @router.get('/produtos/{id}')
 def exibir_produto(id: int, session: Session = Depends(get_db)):
-    produto_localizado = RepositorioProduto(session).buscarPorId(id)
+    produto_localizado = RepositorioProduto(session).buscar_por_Id(id)
     if not produto_localizado:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail=f'Não há um produto com o id = {id}')

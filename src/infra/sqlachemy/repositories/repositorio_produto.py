@@ -26,7 +26,7 @@ class RepositorioProduto():
         produtos = self.session.query(models.Produto).all()
         return produtos
 
-    def buscarPorId(self, id: int):
+    def buscar_por_Id(self, id: int):
         consulta = select(models.Produto).where(models.Produto.id == id)
         produto = self.session.execute(consulta).scalars().first()
         return produto
