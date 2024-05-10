@@ -14,6 +14,16 @@ class ProdutoSimples(BaseModel):
     class Config:
         orm_mode = True
 
+class PedidoSimplesListar(BaseModel):
+    id: Optional[int] = None
+    quantidade: int
+    local_entrega: Optional[str] = None
+    tipo_entrega: str
+    observacao: Optional[str] = "Sem observações"
+
+    class Config:
+        orm_mode = True
+
 
 class Usuario(BaseModel):
     id: Optional[int] = None
@@ -21,6 +31,7 @@ class Usuario(BaseModel):
     telefone: str
     senha: str
     produtos: List[ProdutoSimples] = []
+    pedidos: List[PedidoSimplesListar] = []
 
     class Config:
         orm_mode = True
@@ -53,14 +64,25 @@ class Pedido(BaseModel):
     quantidade: int
     local_entrega: Optional[str] = None
     tipo_entrega: str
-    observacoes: Optional[str] = "Sem observações"
-
+    observacao: Optional[str] = "Sem observações"
     usuario_id: Optional[int] = None
     produto_id: Optional[int] = None
+
+    class Config:
+        orm_mode = True
+
+
+class PedidoSimples(BaseModel):
+    id: Optional[int] = None
+    quantidade: int
+    local_entrega: Optional[str] = None
+    tipo_entrega: str
+    observacao: Optional[str] = "Sem observações"
+    usuario_id: Optional[int]
+    produto_id: Optional[int]
 
     usuario: Optional[UsuarioSimples] = None
     produto: Optional[ProdutoSimples] = None
 
     class Config:
         orm_mode = True
-

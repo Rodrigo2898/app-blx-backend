@@ -15,7 +15,7 @@ class RepositorioPedido():
             quantidade=pedido.quantidade,
             local_entrega=pedido.local_entrega,
             tipo_entrega=pedido.tipo_entrega,
-            observacoes=pedido.observacoes,
+            observacao=pedido.observacao,
             usuario_id=pedido.usuario_id,
             produto_id=pedido.produto_id
         )
@@ -34,7 +34,13 @@ class RepositorioPedido():
         return pedido
 
     def listar_pedidos_por_usuario_id(self, usuario_id: int):
-        pass
+        query = select(models.Pedido).where(models.Pedido.usuario_id == usuario_id)
+        resultado = self.session.execute(query).scalars().all()
+        return resultado
 
     def listar_minhas_vendas_por_usuario_id(self, usuario_id: int) -> List[models.Pedido]:
-        pass
+        query = select(models.Pedido) \
+                .join_from(models.Pedido, models.Produto) \
+                .where(models.Produto.usuario_id == usuario_id)
+        resultado = self.session.execute(query).scalars().all()
+        return resultado
