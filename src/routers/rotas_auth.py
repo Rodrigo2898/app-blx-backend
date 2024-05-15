@@ -1,10 +1,11 @@
 from fastapi import APIRouter, status, Depends, HTTPException
 from typing import List
 from sqlalchemy.orm import Session
-from src.schemas.schemas import Usuario, UsuarioSimples, LoginData
+from src.schemas.schemas import Usuario, UsuarioSimples, LoginData, LoginSucesso
 from src.infra.sqlachemy.config.database import get_db
 from src.infra.sqlachemy.repositories.repositorio_usuario import RepositorioUsuario
-from src.infra.providers import hash_provider
+from src.infra.providers import hash_provider, token_provider
+from src.routers.auth_utils import obter_usuario_logado
 
 router = APIRouter()
 
@@ -41,6 +42,13 @@ def login(login_data: LoginData, session: Session = Depends(get_db)):
                             detail="Senha inválida")
 
     # Gerar token JWT
+    token = token_provider.criar_access_token({'sub': usuario.telefone})
+    return {'usuario': usuario, 'access_token': token}
+    # return LoginSucesso(usuario=usuario, access_token=token)
+
+
+@router.get("/me", response_model=UsuarioSimples)
+def meus_dados(usuario: Usuario = Depends(obter_usuario_logado)):
     return usuario
 
 

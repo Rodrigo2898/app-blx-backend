@@ -51,6 +51,11 @@ class LoginData(BaseModel):
     telefone: str
 
 
+class LoginSucesso(BaseModel):
+    usuario: UsuarioSimples
+    access_token: str
+
+
 class Produto(BaseModel):
     id: Optional[int] = None
     nome: str
